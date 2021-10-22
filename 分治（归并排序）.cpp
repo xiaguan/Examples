@@ -40,6 +40,35 @@ vector<int> mergesort(vector<int>& nums) {
     vector<int> right(nums.begin() + mid , nums.end());
     return merge(mergesort(left), mergesort(right));
 }
+// 另外一个版本的分治
+void target_sort(vector<int> &num) {
+    if (num.size() < 1) return;
+    int target = num[0];
+    auto beg = num.begin(), end = num.end() - 1;
+    while (beg != end ) {
+        if (*beg == target) 
+        {
+            if (*end < target) {
+                swap(*beg, *end);
+                beg++;
+            }
+            else {
+                end--;
+            }
+            
+        }
+        else if (*end == target) 
+        {
+            if (*beg > target) {
+                swap(*beg, *end);
+                end--;
+            }
+            else beg++;
+        }
+    }
+    vector<int> left(num.begin(), beg); target_sort(left); copy(left.begin(), left.end(), num.begin());
+    vector<int> right(beg + 1, num.end()); target_sort(right); copy(right.begin(), right.end(), beg + 1);
+}
 int main() {
     vector<int> n{ 6,5,4,3,2,1 };
     n = mergesort(n);
