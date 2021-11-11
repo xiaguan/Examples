@@ -1,7 +1,19 @@
 {
 	"folders": [
 		{
+			"name": "C++",
+			"path": "..\\Code\\C++"
+		},
+		{
+			"name": "Notes",
+			"path": "..\\Code\\Notes"
+		},
+		{
+			"name": "Examples",
 			"path": "."
+		},
+		{
+			"path": "..\\Code\\Python"
 		}
 	]
 }
