@@ -12,9 +12,10 @@ int n;
 vector<int> G;
 
 void printfn(int a[],int n){
-    for(int i = 0;i<n;i++){
+    for(int i = 0;i<n-1;i++){
         printf("%d ",a[i]);
     }
+    printf("%d",a[n-1]);
     printf("\n");
 }
 
@@ -87,6 +88,7 @@ void shellsort(int a[],int n){
 }
 
 int main(){
+    
     int q[10]={9,8,8,7,6,5,4,3,2,1};
     int test[10]={9,8,8,7,6,5,4,3,2,1};
 

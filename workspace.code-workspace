@@ -14,6 +14,9 @@
 		},
 		{
 			"path": "..\\Code\\Python"
+		},
+		{
+			"path": "..\\Code\\C++\\Socket"
 		}
 	]
 }
