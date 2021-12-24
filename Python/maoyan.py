@@ -34,13 +34,12 @@ def parse_one_page(html):
     pattern = re.compile(
         r"<i.*?board-index-(\d*).*?title=\"(\w*)?\".*?data-src=\"(.*?)\".*?主演：(.*?)</p>.*?time\">上映时间：(.*?)</p>.*?integer\">(\d).*?(\d)</i></p>",re.S)
     items = pattern.findall(html)
-    print(items)
     for item in items:
         yield {
             'rank':item[0],
             'title':item[1],
             'img-src':item[2],
-            'stars':item[3],
+            'stars':item[3].strip()[3:],
             'time':item[4],
             'score':str(item[5])+'.'+str(item[6])
         }
@@ -48,7 +47,7 @@ def parse_one_page(html):
 def main():
     for i in range(10):
         time.sleep(1)
-        html = get_one_page('http://maoyan.com/board/4?offset=' + str(i*10))
+        html = get_one_page('http://maoyan.com/board/4?offset=' + str(i*10)) # 结果是text
         for item in parse_one_page(html):
             print(item)
             write_to_file(item)
