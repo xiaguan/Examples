@@ -6,8 +6,8 @@
 3. m_appenders  //log输出的地方，是个链表，比如说一个日志可以同时输到std和file里面 
 4. log()  //将满足level级别的log通过m_appenders的log()输出 
 5. 各种级别函数简化调用log()如：debug(ptr event)
-6.addAppender       //向m_appenders中添加链表
-7.delAppeder        //删除
+6. addAppender       //向m_appenders中添加链表
+7. delAppeder        //删除
 
 
 ### LogEvent 
@@ -20,6 +20,7 @@ log输出类，是个基类
 1.  m_level             //满足级别输出
 2. m_formatter(ptr)     // formatter对象的shared_ptr指针
 3. log                     //纯虚函数
+
 #### StdOutAppender继承自LogAppender
 1. override 父类的log，通过formatter将log按格式输出
 
