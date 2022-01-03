@@ -1,3 +1,29 @@
+//链表快排(函数编程)
+template<typename T>
+std::list<T> sequential_quick_sort(std::list<T> input)
+{
+    //如果链表为空直接返回
+    if(input.empty())
+    {
+    return input;
+    }
+    std::list<T> result;  //保存结果
+    result.splice(result.begin(),input,input.begin()); // 将input剪切到result
+    T const& pivot=*result.begin(); // 设定目标值
+
+    //std::partition会将区间[first,last)中的元素重新排列，满足判断条件pred的元素会被放在区间的前段，不满足pred的元素会被放在区间的后段。
+    //返回一个迭代器
+    auto divide_point=std::partition(input.begin(),input.end(),[&](T const& t){return t<pivot;}); // 3
+
+    std::list<T> lower_part;
+    lower_part.splice(lower_part.end(),input,input.begin(),divide_point); // 4
+    std::future<std::list<T>> lower = std::async(sequential_quick_sort<T>,std::move(lower_part));
+    std::future<std::list<T>> higer = std::async(sequential_quick_sort<T>,std::move(input));
+    result.splice(result.end(),higer.get()); // 7
+    result.splice(result.begin(),lower.get()); // 8
+    return result;
+}
+
 // 快速排序算法模板
 void quick_sort(int q[], int l, int r)
 {
