@@ -45,6 +45,7 @@ def parse_one_page(html):
         }
 
 def main():
+    
     for i in range(10):
         time.sleep(1)
         html = get_one_page('http://maoyan.com/board/4?offset=' + str(i*10)) # 结果是text

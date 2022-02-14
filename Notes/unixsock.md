@@ -35,3 +35,77 @@ int listen(int sockfd, int backlog);
 ```
 int accept(int sockfd,struct sockaddr * cliaddr,socklne_t *addrlen)
 ```
+
+## 套接字地址结构
+### IPV4套接字地址结构
+IPv4套接字地址，它以sockaddr_in命名，定义在<netinet/in.h>头文件中
+```
+struct in_addr{
+    in_addr_t s_addr;     // 32-bit IPV4 address(网络字节序)
+}
+
+struct sockaddr_in{
+    uint8_t sin_len;
+    sa_family_t sin_family;
+    in_port_t sin_port;   // 16字节 port number
+    struct in_addr sin_addr;   // ipv4地址
+    char sin_zero[8];     //不使用
+}
+```
+### 通用套接字地址结构
+  当作一个参数传递进任何套接字函数时，套接字地址结构总是以引用形式（也就是以指向该结构的指针）来传递。
+  通用套接字地址结构：
+  ```
+  struct sockaddr{
+      uint8_t sa_lne;
+      sa_family_t sa_family;   //address family
+      char sa_data[14];      // protocol-specific address
+  }
+
+### 常用函数
+#### inet_pton和inet_ntop
+这两个函数对于ipv4和ipv6都适用。函数名中的p和n分别代表表达（presentation）和数值（numeric）。
+```
+#include <arpa/inet.h>
+int inet_pton(int family,const char * strptr,void  * addrptr);
+//成功返回1，表达格式有误返回0，出错返回-1
+const char * inet_ntop(int family,const void * addrptr,char * str ptr, size_t len);
+//成功则返回指向结果的指针，若出错则为NULL
+```
+len参数
+```
+#define INET_ADDRSTRLEN 16   // IPV4
+#define INET6_ADDRSTRLEN 46  // IPV6
+```
+
+example:
+```
+inet_pton(AF_INET,m_serv_adres.c_str(),&m_serv_addr.sin_addr);
+
+char ipadress[INET_ADDRSTRLEN];
+inet_ntop(AF_INET,&serv_addr.sin_addr,ipadress,sizeof(ipadress)); 
+log_msg += std::string(ipadress);
+```
+
+inet_ntop存在一个问题：它要求调用者传递一个二进制地址的指针。为了解决问题，我们自行编写一个sock_ntop，只用传入sockaddr和长度（区分IPV4和IPV6）。（存在一定设计问题，后面再补）
+
+#### readn,writen和readline函数
+由于TCP(或其他字节流套接字)的缓冲区问题，read和write的返回值并不是我们期望的值。我们需要手动编写一个指定大小的read和write函数，readline并不是必要的。但你通过阅读另一本书，发现socket编程接口提供了专门用于socket数据读写的函数。
+1. TCP
+```
+#include <sys/types.h>
+#include <sys/socket.h>
+
+ssize_t recv(int sockfd,void * buf,size_t len,int flags);
+ssize_t send(int sockfd,const void * buf,size_t len,int flags);
+```
+flags:通常设为0。（其他值可以查手册）
+
+但，这样的函数，同样存在上述问题。
+编写readn,writen函数如下:
+编写时候的tips,在C语言中，void指针可以指向任何数据类型的变量。
+
+
+
+ 
+
